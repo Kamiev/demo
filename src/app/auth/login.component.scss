@@ -1,4 +1,5 @@
 @import "src/theme/theme-variables";
+@import url("https://fonts.cdnfonts.com/css/sf-pro-display");
 
 :host {
   display: flex;
@@ -25,4 +26,50 @@
 
 .login-error {
   color: mat-color($app-warn);
+}
+
+.headText {
+  font-size: 32px;
+  font-weight: 590;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+  color: #07203a;
+}
+
+.login-container {
+  border-radius: 12px;
+  gap: 48px;
+}
+
+.mat-typography {
+  font-family: "SF Pro Display", sans-serif;
+}
+
+.text-may-be-hidden {
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #2d465b;
+}
+
+.clear-button,
+.toggle-password-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1;
+}
+
+.clear-button {
+  right: 0.5rem;
+}
+
+.toggle-password-button {
+  right: 0.5rem;
 }

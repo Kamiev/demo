@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
-
 import { environment } from '@env/environment';
 import { Logger, UntilDestroy, untilDestroyed } from '@shared';
 import { AuthenticationService } from './authentication.service';
@@ -20,6 +19,8 @@ export class LoginComponent implements OnInit {
   error: string | undefined;
   loginForm!: FormGroup;
   isLoading = false;
+  passwordFieldType: string = 'password';
+  passwordIcon: string = '../../assets/eyes.png';
 
   constructor(
     private router: Router,
@@ -57,9 +58,23 @@ export class LoginComponent implements OnInit {
 
   private createForm() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required],
+      username: ['', Validators.required],
       remember: true,
     });
+  }
+
+  clearEmail() {
+    this.loginForm.get('email')?.setValue('');
+  }
+
+  clearUsername() {
+    this.loginForm.get('username')?.setValue('');
+  }
+
+  togglePassword() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.passwordIcon = this.passwordFieldType === 'password' ? '../../assets/eyes.png' : '../../assets/Subtract.png';
   }
 }

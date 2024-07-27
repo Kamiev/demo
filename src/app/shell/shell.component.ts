@@ -25,10 +25,10 @@ export class ShellComponent implements OnInit {
     this.authenticationService.logout().subscribe(() => this.router.navigate(['/login'], { replaceUrl: true }));
   }
 
-  get username(): string | null {
-    const credentials = this.credentialsService.credentials;
-    return credentials ? credentials.username : null;
-  }
+  // get username(): string | null {
+  //   const credentials = this.credentialsService.credentials;
+  //   return credentials ? credentials.username : null;
+  // }
 
   get isMobile(): boolean {
     return this.breakpoint.isMatched(Breakpoints.Small) || this.breakpoint.isMatched(Breakpoints.XSmall);

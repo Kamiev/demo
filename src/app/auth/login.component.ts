@@ -15,66 +15,31 @@ const log = new Logger('Login');
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+
   version: string | null = environment.version;
   error: string | undefined;
-  loginForm!: FormGroup;
-  isLoading = false;
-  passwordFieldType: string = 'password';
-  passwordIcon: string = '../../assets/eyes.png';
+  email:string=''
+  username:string=''
+  password:string=''
+
+
+
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService
-  ) {
-    this.createForm();
-  }
+    private authenticationService:AuthenticationService
+  ){}
 
   ngOnInit() {}
 
   login() {
-    this.isLoading = true;
-    const login$ = this.authenticationService.login(this.loginForm.value);
-    login$
-      .pipe(
-        finalize(() => {
-          this.loginForm.markAsPristine();
-          this.isLoading = false;
-        }),
-        untilDestroyed(this)
-      )
-      .subscribe(
-        (credentials) => {
-          log.debug(`${credentials.username} successfully logged in`);
-          this.router.navigate([this.route.snapshot.queryParams['redirect'] || '/'], { replaceUrl: true });
-        },
-        (error) => {
-          log.debug(`Login error: ${error}`);
-          this.error = error;
-        }
-      );
-  }
-
-  private createForm() {
-    this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      username: ['', Validators.required],
-      remember: true,
-    });
-  }
-
-  clearEmail() {
-    this.loginForm.get('email')?.setValue('');
-  }
-
-  clearUsername() {
-    this.loginForm.get('username')?.setValue('');
-  }
-
-  togglePassword() {
-    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
-    this.passwordIcon = this.passwordFieldType === 'password' ? '../../assets/eyes.png' : '../../assets/Subtract.png';
+    const payload={
+      username:this.username,
+      email:this.email,
+      password:this.password
+    }
+    console.log("payload>>>", payload)
   }
 }

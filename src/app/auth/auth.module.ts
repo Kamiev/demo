@@ -22,7 +22,6 @@ import { LoginComponent } from './login.component';
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    
   ],
   declarations: [LoginComponent],
 })

@@ -19,16 +19,15 @@ const credentialsKey = 'credentials';
 export class CredentialsService {
   private _credentials: Credentials | null = null;
 
-  constructor(private http:HttpClient) {
+  constructor(private http: HttpClient) {
     // const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     // if (savedCredentials) {
     //   this._credentials = JSON.parse(savedCredentials);
     // }
   }
 
-
-  authLogin(payload:{userName:"",password:"",email:""}){
-    return this.http.post('',payload)
+  authLogin(payload: { userName: ''; password: ''; email: '' }) {
+    return this.http.post('', payload);
   }
 
   /**

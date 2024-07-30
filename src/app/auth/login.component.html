@@ -1,77 +1,12 @@
-<div fxFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.5rem" class="mat-typography">
-  <div class="login-container" fxLayout="row" fxLayoutAlign="center">
-    <mat-card fxFlex="90%" fxFlex.sm="66%" fxFlex.md="50%" fxFlex.gt-md="33%" class="login-box">
-      <div class="headText">Войти</div>
-      <form (ngSubmit)="login()">
-        <div class="login-error"  translate>Username or password incorrect.</div>
-        <br />
-        <div class="login-fields" fxLayout="column">
-          <div>
-            <mat-form-field class="custom-username-field" [hideRequiredMarker]="true">
-              <input
-                type="text"
-                matInput
-                name="username"
-                [(ngModel)]="username"
-                autocomplete="username"
-                [placeholder]="'Username' | translate"
-                required
-              />
-              <button type="button" class="clear-button" >
-                <img src="../../assets/Textfield_icon.png" alt="Clear" class="clear-icon" />
-              </button>
-              <!-- <mat-error *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].touched">
-                <span translate>Username is required</span>
-              </mat-error> -->
-            </mat-form-field>
-            <div class="text-may-be-hidden">Текст может быть скрыт</div>
-          </div>
-          <div>
-            <mat-form-field class="custom-email-field" [hideRequiredMarker]="true">
-              <input
-                type="text"
-                matInput
-                [(ngModel)]="email"
-                name="email"
-                autocomplete="email"
-                [placeholder]="'Email' | translate"
-                required
-              />
-              <button type="button" class="clear-button">
-                <img src="../../assets/Textfield_icon.png" alt="Clear" class="clear-icon" />
-              </button>
-              <!-- <mat-error *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched">
-                <span translate>Username is required</span>
-              </mat-error> -->
-            </mat-form-field>
-            <div class="text-may-be-hidden">Текст может быть скрыт</div>
-          </div>
-          <div>
-            <mat-form-field [hideRequiredMarker]="true" class="custom-password-field">
-              <input
-                matInput
-                [(ngModel)]="password"
-                name="password"
-                autocomplete="current-password"
-                [placeholder]="'Password' | translate"
-                required
-              />
-              <button type="button" class="toggle-password-button">
-                <img [src]="" alt="" class="toggle-icon" width="20" height="20" />
-              </button>
-              <!-- <mat-error *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
-                <span translate>Password is required</span>
-              </mat-error> -->
-            </mat-form-field>
-            <div class="text-may-be-hidden">Текст может быть скрыт</div>
-          </div>
-          <br />
-          <button mat-raised-button color="primary" type="submit">
-            <app-loader class="inline-loader" ></app-loader>
-            <span translate>Войти</span>
-          </button>
-        </div>
-      </form>
-    </mat-card>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="username">Username</label>
+    <input id="username" formControlName="username" type="text" />
   </div>
-</div>
+  <div>
+    <label for="password">Password</label>
+    <input id="password" formControlName="password" type="password" />
+  </div>
+  <button type="submit">Login</button>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+</form>

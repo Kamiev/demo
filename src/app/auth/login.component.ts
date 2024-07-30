@@ -15,31 +15,50 @@ const log = new Logger('Login');
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-
   version: string | null = environment.version;
   error: string | undefined;
-  email:string=''
-  username:string=''
-  password:string=''
+  email: string = '';
+  username: string = '';
+  password: string = '';
+  loginForm: FormGroup;
+  places: any;
 
+  constructor(private authService: AuthenticationService, private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
 
+  ngOnInit(): void {}
 
+  onSubmit(): void {
+    if (this.loginForm && this.loginForm.valid) {
+      const { username, password } = this.loginForm.value;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private authenticationService:AuthenticationService
-  ){}
-
-  ngOnInit() {}
-
-  login() {
-    const payload={
-      username:this.username,
-      email:this.email,
-      password:this.password
+      this.authService.login(username, password).subscribe(
+        (response) => {
+          console.log('Login successful');
+          this.fetchPlaces();
+        },
+        (error) => {
+          console.error('Login error:', error);
+          this.error = error;
+        }
+      );
     }
-    console.log("payload>>>", payload)
+  }
+
+  private fetchPlaces(): void {
+    this.authService.getPlaces().subscribe(
+      (data) => {
+        this.places = data;
+        console.log('Places:', this.places);
+      },
+      (error) => {
+        console.error('Error fetching places:', error);
+        this.error = error;
+      }
+    );
   }
 }

@@ -1,51 +1,44 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
-import { Credentials, CredentialsService } from './credentials.service';
-import { HttpClient } from '@angular/common/http';
-
-export interface LoginContext {
-  username: string;
-  password: string;
-  remember?: boolean;
-}
-
-/**
- * Provides a base for authentication workflow.
- * The login/logout methods should be replaced with proper implementation.
- */
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  constructor(private credentialsService: CredentialsService,
-    private http:HttpClient
-  ) {}
+  private apiUrl = 'http://localhost:8080/api';
+  private isAuthenticated = false;
 
-  /**
-   * Authenticates the user.
-   * @param context The login parameters.
-   * @return The user credentials.
-   */
-  // login(context: LoginContext): Observable<Credentials> {
-  //   // Replace by proper authentication call
-  //   const data = {
-  //     username: context.username,
-  //     token: '123456',
-  //   };
-  //   this.credentialsService.setCredentials(data, context.remember);
-  //   return of(data);
-  // }
-  authLogin(payload:{username:string,password:string,email:string}){
-    return this.http.post('',payload)
+  constructor(private http: HttpClient) {}
+
+  login(username: string, password: string): Observable<any> {
+    const loginPayload = { username, password };
+
+    return this.http.post(`${this.apiUrl}/auth/login`, loginPayload, { withCredentials: true }).pipe(
+      tap(() => (this.isAuthenticated = true)),
+      catchError(this.handleError)
+    );
   }
-  /**
-   * Logs out the user and clear credentials.
-   * @return True if the user was logged out successfully.
-   */
-  logout(): Observable<boolean> {
-    // Customize credentials invalidation here
-    // this.credentialsService.setCredentials();
-    return of(true);
+
+  getPlaces(): Observable<any> {
+    if (!this.isAuthenticated) {
+      return throwError('User is not authenticated');
+    }
+
+    return this.http.get(`${this.apiUrl}/places`, { withCredentials: true }).pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Unknown error!';
+    if (error.status === 401) {
+      errorMessage = 'Unauthorized request. Please check your credentials.';
+    } else if (error.status === 0) {
+      errorMessage = 'Network error. Please check your connection.';
+    } else {
+      errorMessage = `Error: ${error.statusText}`;
+    }
+    console.error('HTTP Error:', error);
+    return throwError(errorMessage);
   }
 }
